@@ -27,6 +27,12 @@ namespace MvcCoreCosmosDb.Controllers
             List<Coche> coches = await this.service.GetCochesAsync();
             return View(coches);
         }
+        [HttpPost]
+        public async Task<IActionResult> MisCoches(string marca)
+        {
+            List<Coche> coches = await this.service.GetCochesMarcaAsync(marca);
+            return View(coches);
+        }
         public IActionResult Create()
         {
             return View();

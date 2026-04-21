@@ -67,6 +67,20 @@ namespace MvcCoreCosmosDb.Services
             await this.containerCosmos.UpsertItemAsync<Coche>
                 (coche, new PartitionKey(coche.Id));
         }
+        public async Task<List<Coche>>
+            GetCochesMarcaAsync(string marca)
+        {
+            string sql = $"SELECT * FROM c WHERE c.Marca='{marca}'";
+            QueryDefinition definition = new QueryDefinition(sql);
+            var query = this.containerCosmos.GetItemQueryIterator<Coche>(definition);
+            List<Coche> coches = new List<Coche>();
+            while (query.HasMoreResults)
+            {
+                var results = await query.ReadNextAsync();
+                coches.AddRange(results);
+            }
+            return coches;
+        }
     }
         
 }
